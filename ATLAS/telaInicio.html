@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HACKTOON - Plataforma de Treino e Dieta</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Chart.js CDN para gráficos -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar de Navegação SPA -->
+    <aside class="sidebar">
+      <div class="logo">
+        <h2>HACKTOON<span>.fit</span></h2>
+      </div>
+      <nav class="nav-menu">
+        <button class="nav-btn active" data-target="view-perfil"><i class="fa-solid fa-user"></i> Perfil & Peso</button>
+        <button class="nav-btn" data-target="view-treino"><i class="fa-solid fa-dumbbell"></i> Módulo Treino</button>
+        <button class="nav-btn disabled-preview" data-target="view-dieta"><i class="fa-solid fa-utensils"></i> Módulo Dieta (Etapa 6)</button>
+        <button class="nav-btn disabled-preview" data-target="view-insights"><i class="fa-solid fa-chart-column"></i> Insights (Etapa 7)</button>
+        <button class="nav-btn disabled-preview" data-target="view-gemini"><i class="fa-solid fa-brain"></i> Assistente Gemini (Etapa 8)</button>
+      </nav>
+      <div class="demo-box">
+        <button id="btn-seed-demo" class="btn btn-warning"><i class="fa-solid fa-bolt"></i> Gerar Dados Demo (14 Dias)</button>
+        <small>Popula o localStorage para testes rápidos</small>
+      </div>
+    </aside>
+
+    <!-- Área de Conteúdo Principal (SPA) -->
+    <main class="main-content">
+      <div id="alert-box" class="alert hidden"></div>
+
+      <!-- VIEW 1: PERFIL & REGISTRO DE PESO -->
+      <section id="view-perfil" class="spa-view active">
+        <header class="view-header">
+          <h1>Perfil do Usuário e Evolução de Peso</h1>
+        </header>
+
+        <div class="grid-2">
+          <!-- Form Perfil -->
+          <div class="card">
+            <h3>Configuração do Perfil</h3>
+            <form id="form-perfil">
+              <div class="form-group">
+                <label for="perfil-peso-atual">Peso Atual (kg):</label>
+                <input type="number" step="0.1" id="perfil-peso-atual" required min="0.1">
+              </div>
+              <div class="form-group">
+                <label for="perfil-meta-peso">Meta de Peso (kg):</label>
+                <input type="number" step="0.1" id="perfil-meta-peso" required min="0.1">
+              </div>
+              <div class="form-group">
+                <label for="perfil-meta-calorica">Meta Calórica Diária (kcal):</label>
+                <input type="number" id="perfil-meta-calorica" required min="1">
+              </div>
+              <button type="submit" class="btn btn-primary">Salvar Perfil</button>
+            </form>
+          </div>
+
+          <!-- Form Registro de Peso -->
+          <div class="card">
+            <h3>Registrar Peso Corporal</h3>
+            <form id="form-peso">
+              <div class="form-group">
+                <label for="peso-data">Data:</label>
+                <input type="date" id="peso-data" required>
+              </div>
+              <div class="form-group">
+                <label for="peso-valor">Peso (kg):</label>
+                <input type="number" step="0.1" id="peso-valor" required min="0.1">
+              </div>
+              <button type="submit" class="btn btn-secondary">Registrar Peso</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Gráfico de Evolução de Peso -->
+        <div class="card margin-top">
+          <h3>Gráfico de Evolução do Peso Corporal vs. Meta</h3>
+          <div class="chart-wrapper">
+            <canvas id="chartPeso"></canvas>
+          </div>
+        </div>
+
+        <!-- Tabela de Histórico de Peso -->
+        <div class="card margin-top">
+          <h3>Histórico de Pesos Registrados</h3>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Peso (kg)</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-pesos"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- VIEW 2: MÓDULO TREINO -->
+      <section id="view-treino" class="spa-view">
+        <header class="view-header">
+          <h1>Módulo de Treino & Progressão</h1>
+        </header>
+
+        <div class="grid-3">
+          <!-- Cadastrar Exercício -->
+          <div class="card">
+            <h3>1. Cadastrar Exercício</h3>
+            <form id="form-exercicio">
+              <div class="form-group">
+                <label for="ex-nome">Nome do Exercício:</label>
+                <input type="text" id="ex-nome" required placeholder="Ex: Supino Reto">
+              </div>
+              <div class="form-group">
+                <label for="ex-grupo">Grupo Muscular:</label>
+                <input type="text" id="ex-grupo" required placeholder="Ex: Peito, Pernas">
+              </div>
+              <div class="form-group">
+                <label for="ex-tipo">Tipo:</label>
+                <select id="ex-tipo" required>
+                  <option value="forca">Força (Carga/Reps/Séries)</option>
+                  <option value="cardio">Cardio (Duração/Distância)</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-primary">Salvar Exercício</button>
+            </form>
+          </div>
+
+          <!-- Montar Treino -->
+          <div class="card">
+            <h3>2. Criar Treino</h3>
+            <form id="form-treino">
+              <div class="form-group">
+                <label for="treino-nome">Nome do Treino:</label>
+                <input type="text" id="treino-nome" required placeholder="Ex: Treino A - Peito e Tríceps">
+              </div>
+              <div class="form-group">
+                <label>Selecione os Exercícios:</label>
+                <div id="lista-checkbox-exercicios" class="checkbox-group"></div>
+              </div>
+              <button type="submit" class="btn btn-primary">Salvar Treino</button>
+            </form>
+          </div>
+
+          <!-- Registrar Execução -->
+          <div class="card">
+            <h3>3. Registrar Execução</h3>
+            <form id="form-execucao">
+              <div class="form-group">
+                <label for="exec-data">Data:</label>
+                <input type="date" id="exec-data" required>
+              </div>
+              <div class="form-group">
+                <label for="exec-exercicio-id">Exercício:</label>
+                <select id="exec-exercicio-id" required></select>
+              </div>
+
+              <!-- Inputs dinâmicos para Força -->
+              <div id="fields-forca">
+                <div class="form-group">
+                  <label for="exec-carga">Carga (kg):</label>
+                  <input type="number" step="0.5" id="exec-carga" min="0">
+                </div>
+                <div class="form-group">
+                  <label for="exec-reps">Repetições:</label>
+                  <input type="number" id="exec-reps" min="1">
+                </div>
+                <div class="form-group">
+                  <label for="exec-series">Séries:</label>
+                  <input type="number" id="exec-series" min="1">
+                </div>
+              </div>
+
+              <!-- Inputs dinâmicos para Cardio -->
+              <div id="fields-cardio" class="hidden">
+                <div class="form-group">
+                  <label for="exec-duracao">Duração (min):</label>
+                  <input type="number" id="exec-duracao" min="1">
+                </div>
+                <div class="form-group">
+                  <label for="exec-distancia">Distância (km):</label>
+                  <input type="number" step="0.01" id="exec-distancia" min="0">
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-secondary">Registrar Treino</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Gráfico de Volume de Treino -->
+        <div class="card margin-top">
+          <h3>Evolução do Volume de Treino ao Longo do Tempo</h3>
+          <div class="chart-wrapper">
+            <canvas id="chartVolume"></canvas>
+          </div>
+        </div>
+
+        <!-- Histórico de Execuções e Progressão -->
+        <div class="card margin-top">
+          <h3>Histórico de Execuções & Status de Progressão</h3>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Exercício</th>
+                <th>Tipo</th>
+                <th>Métricas Detalhadas</th>
+                <th>Volume Total</th>
+                <th>Status de Progressão</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-execucoes"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- VIEWS FUTURAS (ETAPAS 6, 7 e 8) -->
+      <section id="view-dieta" class="spa-view">
+        <header class="view-header"><h1>Módulo Dieta & Tabela TACO</h1></header>
+        <p>A ser implementado nas próximas etapas...</p>
+      </section>
+      <section id="view-insights" class="spa-view">
+        <header class="view-header"><h1>Painel de Insights Dinâmicos</h1></header>
+        <p>A ser implementado nas próximas etapas...</p>
+      </section>
+      <section id="view-gemini" class="spa-view">
+        <header class="view-header"><h1>Assistente Gemini IA</h1></header>
+        <p>A ser implementado nas próximas etapas...</p>
+      </section>
+    </main>
+  </div>
+
+  <!-- Scripts JS -->
+  <script src="db.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

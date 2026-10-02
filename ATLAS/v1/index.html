@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTTER — Sua performance diária</title>
+    <!-- Chart.js 4 (Gráficos) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+    
+    <!-- CSS Customizado -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- AUTENTICAÇÃO LOCAL DO PROTÓTIPO -->
+    <section class="auth-screen active" id="authScreen" aria-label="Acesso à plataforma OTTER">
+        <div class="auth-layout">
+            <div class="auth-brand-panel">
+                <a class="auth-logo" href="#" aria-label="OTTER início">
+                    <img src="imagens/logoBranca.png" alt="OTTER" class="auth-logo-image">
+                </a>
+                <div class="auth-brand-copy">
+                    <span class="auth-eyebrow"><span class="ai-live-dot"></span> PERFORMANCE INTELIGENTE</span>
+                    <h1>Seu próximo nível começa com consistência.</h1>
+                    <p>Treino, nutrição e evolução em um só lugar — com seus dados acompanhando cada decisão.</p>
+                </div>
+                <div class="auth-feature-list">
+                    <div><i class="fa-solid fa-chart-line"></i><span>Acompanhe sua evolução</span></div>
+                    <div><i class="fa-solid fa-dumbbell"></i><span>Organize seus treinos</span></div>
+                    <div><i class="fa-solid fa-brain"></i><span>Converse com seu assistente IA</span></div>
+                </div>
+                <div class="auth-orb auth-orb-one"></div>
+                <div class="auth-orb auth-orb-two"></div>
+            </div>
+
+            <div class="auth-form-side">
+                <div class="auth-form-card">
+                    <div class="auth-mobile-brand"><img src="imagens/logoBranca.png" alt="OTTER" class="auth-mobile-logo"></div>
+
+                    <form class="auth-form-panel active" id="loginForm" novalidate>
+                        <div class="auth-form-heading">
+                            <span class="auth-form-kicker">BEM-VINDO DE VOLTA</span>
+                            <h2>Entrar na sua conta</h2>
+                            <p>Acesse seu painel de treino e performance.</p>
+                        </div>
+                        <div class="auth-field">
+                            <label for="loginEmail">E-mail</label>
+                            <div class="auth-input-wrap"><i class="fa-regular fa-envelope"></i><input id="loginEmail" name="email" type="email" placeholder="voce@exemplo.com" autocomplete="email" required></div>
+                        </div>
+                        <div class="auth-field">
+                            <label for="loginPassword">Senha</label>
+                            <div class="auth-input-wrap"><i class="fa-solid fa-lock"></i><input id="loginPassword" name="password" type="password" placeholder="Sua senha" autocomplete="current-password" required></div>
+                        </div>
+                        <div class="auth-error" id="loginError" role="alert" aria-live="polite"></div>
+                        <button class="btn btn-primary auth-submit" type="submit">Entrar <i class="fa-solid fa-arrow-right"></i></button>
+                        <p class="auth-switch-text">Ainda não tem conta? <button type="button" class="auth-switch" data-auth-view="register">Criar cadastro</button></p>
+                    </form>
+
+                    <form class="auth-form-panel" id="registerForm" novalidate>
+                        <div class="auth-form-heading">
+                            <span class="auth-form-kicker">COMECE SUA JORNADA</span>
+                            <h2>Crie sua conta</h2>
+                            <p>Leva menos de um minuto para começar.</p>
+                        </div>
+                        <div class="auth-field">
+                            <label for="registerName">Nome</label>
+                            <div class="auth-input-wrap"><i class="fa-regular fa-user"></i><input id="registerName" name="name" type="text" placeholder="Como podemos te chamar?" autocomplete="name" required minlength="2"></div>
+                        </div>
+                        <div class="auth-field">
+                            <label for="registerEmail">E-mail</label>
+                            <div class="auth-input-wrap"><i class="fa-regular fa-envelope"></i><input id="registerEmail" name="email" type="email" placeholder="voce@exemplo.com" autocomplete="email" required></div>
+                        </div>
+                        <div class="auth-field">
+                            <label for="registerPassword">Senha <span>mínimo 8 caracteres</span></label>
+                            <div class="auth-input-wrap"><i class="fa-solid fa-lock"></i><input id="registerPassword" name="password" type="password" placeholder="Crie uma senha" autocomplete="new-password" required minlength="8"></div>
+                        </div>
+                        <div class="auth-field">
+                            <label for="registerPasswordConfirm">Confirmar senha</label>
+                            <div class="auth-input-wrap"><i class="fa-solid fa-shield-halved"></i><input id="registerPasswordConfirm" name="passwordConfirm" type="password" placeholder="Digite a senha novamente" autocomplete="new-password" required minlength="8"></div>
+                        </div>
+                        <div class="auth-error" id="registerError" role="alert" aria-live="polite"></div>
+                        <button class="btn btn-primary auth-submit" type="submit">Criar conta <i class="fa-solid fa-arrow-right"></i></button>
+                        <p class="auth-switch-text">Já tem uma conta? <button type="button" class="auth-switch" data-auth-view="login">Fazer login</button></p>
+                    </form>
+                    <p class="auth-local-note"><i class="fa-solid fa-circle-info"></i> Autenticação demonstrativa: as contas ficam neste navegador. Não use credenciais reais até conectar um serviço de autenticação.</p>
+                </div>
+                <div class="auth-footer"><img src="imagens/logoBranca.png" alt="OTTER" class="auth-footer-logo"><span>•</span> SEU TREINO, SEU PROGRESSO</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TOPBAR SUPERIOR -->
+    <header class="topbar" id="appHeader">
+        <div class="brand-container" id="brandHomeBtn">
+            <img src="imagens/logoBranca.png" alt="OTTER" class="brand-wordmark">
+        </div>
+
+        <div class="topbar-center" aria-label="Resumo de desempenho">
+            <div class="status-pill otter-pill" title="Métrica calculada somente com os registros reais">
+                <i class="fa-solid fa-bolt"></i>
+                <span>Score OTTER: <strong id="topOtterScore">0</strong>/100</span>
+            </div>
+            <div class="status-pill streak-pill" title="Dias seguidos cumprindo treinos e metas">
+                <i class="fa-solid fa-fire"></i>
+                <span><strong id="topStreakDays">1</strong> Dias Streak</span>
+            </div>
+        </div>
+
+        <div class="topbar-actions">
+            <button class="btn btn-gemini" id="btnToggleGemini">
+                <i class="fa-solid fa-brain"></i>
+                <span>Assistente IA</span>
+            </button>
+            <button class="btn btn-secondary auth-logout" id="btnLogout" title="Sair da conta">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i><span>Sair</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- APP SHELL -->
+    <div class="app-container" id="appShell">
+        
+        <!-- SIDEBAR DE NAVEGAÇÃO -->
+        <aside class="sidebar">
+            <div>
+                <div class="nav-group-title">Módulos do Sistema</div>
+                <ul class="nav-list">
+                    <li class="nav-item active" data-view="ai-home">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        <span>Assistente Gemini</span>
+                    </li>
+                    <li class="nav-item" data-view="dashboard">
+                        <i class="fa-solid fa-chart-pie"></i>
+                        <span>Dashboard & Insights</span>
+                    </li>
+                    <li class="nav-item" data-view="workouts">
+                        <i class="fa-solid fa-dumbbell"></i>
+                        <span>Treino & "Em Treino"</span>
+                    </li>
+                    <li class="nav-item" data-view="routine">
+                        <i class="fa-solid fa-calendar-week"></i>
+                        <span>Rotina Semanal</span>
+                    </li>
+                    <li class="nav-item" data-view="diet">
+                        <i class="fa-solid fa-utensils"></i>
+                        <span>Dieta & Nutrição</span>
+                    </li>
+                    <li class="nav-item" data-view="smartwatch">
+                        <i class="fa-solid fa-stopwatch"></i>
+                        <span>Atividade diária</span>
+                    </li>
+                    <li class="nav-item" data-view="evolution">
+                        <i class="fa-solid fa-arrow-trend-up"></i>
+                        <span>Evolução de Peso</span>
+                    </li>
+                    <li class="nav-item" data-view="profile">
+                        <i class="fa-solid fa-user-gear"></i>
+                        <span>Perfil & Metas (IMC)</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- CARD DE USUÁRIO ATIVO -->
+            <div class="sidebar-user-card" id="sidebarProfileTrigger" style="cursor: pointer;">
+                <div class="sidebar-avatar" id="sidebarUserInitials">LB</div>
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name" id="sidebarUserName">Lucas Brandão</div>
+                    <div class="sidebar-user-goal" id="sidebarUserGoal">Hipertrofia • 80.8kg</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- CONTEÚDO PRINCIPAL (SPA VIEWS) -->
+        <main class="main-content">
+
+            <!-- HOME: ASSISTENTE GEMINI -->
+            <section class="view-section ai-home-view active" id="view-ai-home">
+                <div class="ai-home-content">
+                    <div class="ai-home-heading">
+                        <h1 id="aiHomeGreeting">Olá! O que vamos evoluir hoje?</h1>
+                        <p>Converse sobre seu treino, alimentação e progresso. O Gemini pode usar seus dados do HACKTOON para contextualizar as respostas.</p>
+                    </div>
+
+                    <form id="aiHomeForm" class="ai-home-composer">
+                        <label class="sr-only" for="aiHomePrompt">Mensagem para o Gemini</label>
+                        <textarea id="aiHomePrompt" rows="3" placeholder="Pergunte qualquer coisa sobre seu treino, dieta ou evolução…" required></textarea>
+                        <div class="ai-home-composer-footer">
+                            <button class="btn btn-primary ai-home-send" type="submit">
+                                <span>Enviar</span><i class="fa-solid fa-arrow-up"></i>
+                            </button>
+                        </div>
+                    </form>
+
+                    <div id="aiHomeConversation" class="ai-home-conversation" aria-live="polite"></div>
+
+                    <div class="ai-home-suggestions">
+                        <span class="ai-suggestions-label">Comece por aqui</span>
+                        <div class="ai-suggestion-grid">
+                            <button class="ai-suggestion" type="button" data-prompt="Analise meus treinos e minha evolução recente."><i class="fa-solid fa-chart-line"></i><span>Analisar meu progresso</span></button>
+                            <button class="ai-suggestion" type="button" data-prompt="Como está minha hidratação e alimentação hoje?"><i class="fa-solid fa-utensils"></i><span>Revisar minha rotina de hoje</span></button>
+                            <button class="ai-suggestion" type="button" data-prompt="Sugira uma alternativa segura para meu próximo treino."><i class="fa-solid fa-dumbbell"></i><span>Planejar meu treino</span></button>
+                        </div>
+                    </div>
+
+                    <div class="ai-home-shortcuts">
+                        <span>Ou abra um módulo:</span>
+                        <button type="button" data-open-view="workouts">Treinos</button>
+                        <button type="button" data-open-view="diet">Dieta</button>
+                        <button type="button" data-open-view="evolution">Evolução</button>
+                    </div>
+                    <p class="ai-home-disclaimer">A chave Gemini de demonstração é definida em app.js e acompanha esta cópia do site. Ela fica visível para quem tiver acesso aos arquivos. Suas mensagens e o contexto resumido são enviados ao Google. A IA pode cometer erros; confira recomendações de saúde com um profissional.</p>
+                </div>
+            </section>
+
+            <!-- ==========================================
+                 VIEW 1: DASHBOARD & INSIGHTS (CORE)
+                 ========================================== -->
+            <section class="view-section active" id="view-dashboard">
+                <div class="view-header">
+                    <div class="view-title-wrap">
+                        <h1 id="dashGreeting">Painel de Performance</h1>
+                        <p class="view-subtitle" id="dashDateSub">Visão holística em tempo real de treino, nutrição e biométricas</p>
+                    </div>
+                    <button class="btn btn-primary" id="btnQuickStartWorkout">
+                        <i class="fa-solid fa-play"></i> Iniciar Modo "Em Treino"
+                    </button>
+                </div>
+
+                <!-- SCORE OTTER HERO CARD (NÚCLEO PRINCIPAL) -->
+                <div class="otter-hero-card">
+                    <div class="otter-score-ring">
+                        <svg viewBox="0 0 160 160">
+                            <defs>
+                                <linearGradient id="otterGlowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#ff5500" />
+                                    <stop offset="100%" stop-color="#ff9e00" />
+                                </linearGradient>
+                            </defs>
+                            <circle class="otter-circle-bg" cx="80" cy="80" r="70" />
+                            <circle class="otter-circle-val" id="otterCircleMeter" cx="80" cy="80" r="70" stroke-dasharray="440" stroke-dashoffset="35" />
+                        </svg>
+                        <div class="otter-score-center">
+                            <div class="otter-score-number" id="dashOtterScore">0</div>
+                            <div class="otter-score-label">Score OTTER</div>
+                        </div>
+                    </div>
+
+                    <div class="otter-details">
+                        <div class="otter-badge-row">
+                            <span class="otter-pill-badge"><i class="fa-solid fa-shield-halved"></i> Consistência Excelente</span>
+                                <span class="otter-streak-badge" id="dashStreakBadge"><i class="fa-solid fa-fire"></i> 1 dia</span>
+                                    <span class="status-pill" id="recoveryStatus"><i class="fa-solid fa-heart-pulse"></i> Sem dados suficientes</span>
+                        </div>
+                        
+                        <!-- INSIGHT DINÂMICO GERADO VIA CÓDIGO (NÃO ESTÁTICO) -->
+                        <div class="dynamic-insight-box" id="dashDynamicInsight">
+                            <!-- Gerado via JS cruzando dados de treino, balanço calórico e peso -->
+                            Registre suas atividades para visualizar insights personalizados.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GRID DE CARDS RESUMO -->
+                <div class="grid-cards">
+                    <!-- Balanço Calórico -->
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title"><i class="fa-solid fa-fire"></i> Saldo Calórico Hoje</span>
+                            <div class="card-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+                        </div>
+                        <div class="stat-value" id="dashCalBalance">Sem registros</div>
+                        <div class="stat-sub" id="dashCalSub">Registre uma refeição para iniciar o saldo.</div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" id="dashCalBar" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Volume Total Treino -->
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title"><i class="fa-solid fa-dumbbell"></i> Volume Acumulado</span>
+                            <div class="card-icon"><i class="fa-solid fa-chart-line"></i></div>
+                        </div>
+                        <div class="stat-value" id="dashWeeklyVolume">0 <span class="stat-unit">kg</span></div>
+                        <div class="stat-sub">
+                            <span class="progression-badge" id="dashProgressionBadge">Sem execuções</span>
+                        </div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" id="dashVolumeBar" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Água Ingerida -->
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title"><i class="fa-solid fa-droplet"></i> Hidratação Hoje</span>
+                            <div class="card-icon" style="color: #00e5ff; background: rgba(0, 180, 255, 0.15); border-color: rgba(0, 180, 255, 0.3);">
+                                <i class="fa-solid fa-bottle-water"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="dashWaterVal">0 <span class="stat-unit">/ 0 ml</span></div>
+                        <div class="stat-sub" id="dashWaterSub">Nenhuma ingestão registrada.</div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" id="dashWaterBar" style="width: 0%; background: linear-gradient(135deg, #00b4d8, #0077b6);"></div>
+                        </div>
+                    </div>
+
+                    <!-- Smartwatch Atividade -->
+                    <button class="card smartwatch-summary-card" id="openSmartwatchPanel" type="button" aria-label="Registrar dados do smartwatch">
+                        <div class="card-header">
+                            <span class="card-title"><i class="fa-solid fa-person-walking"></i> Smartwatch Passos</span>
+                            <div class="card-icon"><i class="fa-solid fa-shoe-prints"></i></div>
+                        </div>
+                        <div class="stat-value" id="dashStepsVal">Sem registro de hoje</div>
+                        <div class="stat-sub" id="dashActiveKcalSub">Clique para registrar passos e calorias ativas.</div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" id="dashStepsBar" style="width: 0%;"></div>
+                        </div>
+                    </button>
+                </div>
+
+                <!-- GRÁFICOS DO DASHBOARD (CHART.JS) -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title"><i class="fa-solid fa-chart-column"></i> Balanço Calórico (Últimos 7 Dias)</span>
+                            <span class="brand-tag" title="Força: 200 kcal por sessão concluída; cardio: 6 kcal por minuto.">Saldo ajustado = consumo - meta - gasto estimado</span>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="chartCaloricBalance"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title"><i class="fa-solid fa-chart-pie"></i> Macronutrientes de Hoje</span>
+                            <span class="brand-tag">Consumo registrado vs meta</span>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="chartMacrosDoughnut"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TREINO PLANEJADO PARA HOJE -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title"><i class="fa-solid fa-bullseye"></i> Foco Programado para Hoje</span>
+                        <button class="btn btn-secondary" id="btnGoToRoutine"><i class="fa-solid fa-pen-to-square"></i> Editar Rotina</button>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+                        <div>
+                            <h2 style="font-size: 1.3rem; color: var(--c-sunbeam);" id="dashTodayFocus">Sem rotina configurada</h2>
+                            <p style="font-size: 0.85rem; color: var(--c-text-muted); margin-top: 0.25rem;" id="dashTodayRoutineMeta">
+                                Configure os dias e focos de treino no onboarding.
+                            </p>
+                        </div>
+                        <button class="btn btn-primary" id="btnLaunchWorkoutFromDash">
+                            <i class="fa-solid fa-play"></i> Iniciar Treino Agora
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==========================================
+                 VIEW 2: MÓDULO DE TREINO & "EM TREINO"
+                 ========================================== -->
+            <section class="view-section" id="view-workouts">
+                <div class="view-header">
+                    <div class="view-title-wrap">
+                        <h1>Sessão de Treino & Execução</h1>
+                        <p class="view-subtitle">Controle de sobrecarga progressiva, calculadora de anilhas e substituição inteligente</p>
+                    </div>
+                    <button class="btn btn-primary" id="btnStartWorkoutMode">
+                        <i class="fa-solid fa-bolt"></i> Abrir Modo "Em Treino"
+                    </button>
+                </div>
+
+                <div class="workout-active-banner">
+                    <div>
+                        <span class="brand-tag" style="background: rgba(0,0,0,0.4);"><i class="fa-solid fa-fire"></i> Treino em Destaque</span>
+                        <h2 style="font-size: 1.4rem; margin-top: 0.4rem;" id="workoutBannerTitle">Sem treino programado</h2>
+                        <p style="font-size: 0.85rem; opacity: 0.9;" id="workoutBannerStats">Configure seus dias e focos para planejar treinos.</p>
+                    </div>
+                    <button class="btn btn-magic" id="btnEnterWorkoutInteractive">
+                        <i class="fa-solid fa-play"></i> Continuar Treino
+                    </button>
+                </div>
+
+                <!-- LISTA DE EXERCÍCIOS DA SESSÃO ATUAL -->
+                <div class="card" style="margin-bottom: 2rem;">
+                    <div class="card-header">
+                        <span class="card-title"><i class="fa-solid fa-list-check"></i> Exercícios da Sessão Atual</span>
+                        <span style="font-size: 0.8rem; color: var(--c-text-muted);">Classificação de progressão automática (>103% Evoluindo)</span>
+                    </div>
+
+                    <div id="workoutExercisesList" style="display: flex; flex-direction: column; gap: 1rem;">
+                        <!-- Inserido dinamicamente via JS -->
+                    </div>
+                </div>
+
+                <!-- PROGRESSÃO DE VOLUME HISTÓRICO -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title"><i class="fa-solid fa-arrow-trend-up"></i> Progressão de Volume (kg levantados)</span>
+                        <span class="brand-tag">Séries Efetivas</span>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="chartVolumeProgression"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==========================================
+                 VIEW 3: ROTINA SEMANAL (CALENDÁRIO INTERATIVO)
+                 ========================================== -->
+            <section class="view-section" id="view-routine">
+                <div class="view-header">
+                    <div class="view-title-wrap">
+                        <h1>Calendário Semanal & Foco de Treino</h1>
+                        <p class="view-subtitle">Defina o foco de cada dia com gravação e persistência instantânea no HACKTOON_DB</p>
+                    </div>
+                    <button class="btn btn-secondary" id="btnResetRoutineDefaults">
+                        <i class="fa-solid fa-rotate-left"></i> Restaurar meu calendário
+                    </button>
+                </div>
+
+                <!-- GRID DOS 7 DIAS (SEGUNDA A DOMINGO) -->
+                <div class="week-grid" id="weekRoutineGrid">
+                    <!-- Renderizado dinamicamente via JS -->
+                </div>
+
+                <!-- FORMULÁRIO DE EDIÇÃO RÁPIDA DO DIA SELECIONADO -->
+                <div class="card" id="routineEditorCard">
+                    <div class="card-header">
+                        <span class="card-title"><i class="fa-solid fa-pen"></i> Editar Foco do Dia: <strong id="editorDayName" style="color: var(--c-sunbeam);">Segunda-feira</strong></span>
+                        <span class="status-pill"><i class="fa-solid fa-floppy-disk"></i> Salva automaticamente</span>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+                        <div class="form-group">
+                            <label class="form-label">Foco Muscular / Grupos Principais</label>
+                            <input type="text" class="form-control" id="editorDayFocus" placeholder="Ex: Peito, Tríceps & Ombro Anterior">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Meta de Séries Efetivas</label>
+                            <input type="number" min="0" max="40" class="form-control" id="editorDaySets" placeholder="Ex: 18">
+                        </div>
+
+                        <div class="form-group" style="display: flex; align-items: center; gap: 0.75rem; margin-top: 1.5rem;">
+                            <input type="checkbox" id="editorDayRestCheck" style="width: 20px; height: 20px; accent-color: var(--c-sunbeam); cursor: pointer;">
+                            <label for="editorDayRestCheck" style="font-size: 0.9rem; font-weight: 600; cursor: pointer;">
+                                Dia de Descanso (Rest Day / Recuperação Ativa)
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==========================================
+                 VIEW 4: DIETA E NUTRIÇÃO
+                 ========================================== -->
+            <section class="view-section" id="view-diet">
+                <div class="view-header">
+                    <div class="view-title-wrap">
+                        <h1>Dieta & Nutrição</h1>
+                        <p class="view-subtitle">Registre o que consumiu e acompanhe calorias e macronutrientes em relação às suas metas.</p>
+                    </div>
+                </div>
+
+                <!-- CONTROLE DIÁRIO DE HIDRATAÇÃO -->
+                <div class="water-tracker-container" style="margin-bottom: 2rem;">
+                    <div>
+                        <span class="brand-tag" style="background: rgba(0, 180, 255, 0.2); border-color: rgba(0, 180, 255, 0.5); color: #00e5ff;">
+                            <i class="fa-solid fa-droplet"></i> Tracker Hídrico
+                        </span>
+                        <h2 style="font-size: 1.3rem; margin-top: 0.3rem;" id="dietWaterTitle">0 ml / 0 ml consumidos hoje</h2>
+                        <p style="font-size: 0.82rem; color: var(--c-text-muted);">A hidratação impacta diretamente na síntese proteica e rendimento muscular</p>
+                    </div>
+                    <div class="water-quick-btns">
+                        <button class="btn btn-secondary" onclick="addWaterMl(250)"><i class="fa-solid fa-plus"></i> 250 ml</button>
+                        <button class="btn btn-secondary" onclick="addWaterMl(500)"><i class="fa-solid fa-plus"></i> 500 ml</button>
+                        <button class="btn btn-primary" onclick="addWaterMl(1000)"><i class="fa-solid fa-plus"></i> 1 Litro</button>
+                        <label class="water-manual-entry"><span class="sr-only">Quantidade manual de água em mililitros</span><input type="number" min="1" step="1" class="form-control" id="manualWaterMl" placeholder="ml"><button class="btn btn-secondary" type="button" id="btnAddManualWater">Registrar</button></label>
+                    </div>
+                </div>
+
+                <!-- CADASTRO DE ALIMENTOS PRÓPRIOS -->
+                <form class="card custom-food-form" id="customFoodForm" style="margin-bottom: 1.25rem;">
+                    <div class="card-header">
+                        <span class="card-title"><i class="fa-solid fa-box-open"></i> Meus alimentos</span>
+                        <span class="brand-tag">Macros por 100 g</span>
+                    </div>
+                    <div class="meal-log-grid">
+                        <div class="form-group"><label class="form-label" for="customFoodName">Nome do alimento</label><input type="text" class="form-control" id="customFoodName" required placeholder="Ex.: granola caseira"></div>
+                        <div class="form-group"><label class="form-label" for="customFoodCalories">Calorias (kcal)</label><input type="number" min="0" step="0.1" class="form-control" id="customFoodCalories" required></div>
+                        <div class="form-group"><label class="form-label" for="customFoodProtein">Proteínas (g)</label><input type="number" min="0" step="0.1" class="form-control" id="customFoodProtein" required></div>
+                        <div class="form-group"><label class="form-label" for="customFoodCarbs">Carboidratos (g)</label><input type="number" min="0" step="0.1" class="form-control" id="customFoodCarbs" required></div>
+                        <div class="form-group"><label class="form-label" for="customFoodFat">Gorduras (g)</label><input type="number" min="0" step="0.1" class="form-control" id="customFoodFat" required></div>
+                        <div class="custom-food-actions"><button class="btn btn-secondary" type="button" id="customFoodCancel" hidden>Cancelar edição</button><button class="btn btn-primary meal-log-submit" type="submit" id="customFoodSubmit"><i class="fa-solid fa-plus"></i> Cadastrar alimento</button></div>
+                    </div>
+                </form>
+
+                <div class="card custom-foods-card" style="margin-bottom: 2rem;">
+                    <div class="card-header"><span class="card-title"><i class="fa-solid fa-list"></i> Alimentos próprios cadastrados</span></div>
+                    <div id="customFoodsList" class="custom-foods-list"><p class="empty-state">Você ainda não cadastrou alimentos próprios.</p></div>
+                </div>
+
+                <!-- REGISTRO DE REFEIÇÃO COM TACO E ALIMENTOS PRÓPRIOS -->
+                <form class="card meal-log-form" id="mealLogForm" style="margin-bottom: 2rem;">
+                    <div class="card-header"><span class="card-title"><i class="fa-solid fa-pen-to-square"></i> Registrar alimento consumido</span><span class="brand-tag">Catálogo TACO + meus alimentos</span></div>
+                    <div class="meal-log-grid">
+                        <div class="form-group food-search-group"><label class="form-label" for="mealFoodSearch">Buscar alimento</label><div class="taco-search-wrapper"><input type="search" class="form-control" id="mealFoodSearch" placeholder="Busque na TACO ou nos seus alimentos" autocomplete="off" required><div id="mealFoodDropdown" class="taco-autocomplete-dropdown"></div></div></div>
+                        <div class="form-group"><label class="form-label" for="mealGramsInput">Quantidade (g)</label><input type="number" min="0.1" step="0.1" class="form-control" id="mealGramsInput" required placeholder="g"></div>
+                        <div class="form-group"><label class="form-label" for="mealTypeSelect">Tipo de refeição</label><select class="form-control" id="mealTypeSelect" required><option value="">Selecione</option><option>Café da manhã</option><option>Almoço</option><option>Lanche</option><option>Jantar</option><option>Ceia</option><option>Outra</option></select></div>
+                        <div class="form-group"><label class="form-label" for="mealDateInput">Data</label><input type="date" class="form-control" id="mealDateInput" required></div>
+                        <div class="form-group"><label class="form-label" for="mealTimeInput">Horário</label><input type="time" class="form-control" id="mealTimeInput" required></div>
+                    </div>
+                    <div class="selected-food-preview" id="selectedFoodPreview" hidden></div>
+                    <button class="btn btn-primary meal-log-submit" type="submit"><i class="fa-solid fa-plus"></i> Registrar refeição</button>
+                </form>
+
+                <!-- REFEIÇÕES DO DIA -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title"><i class="fa-solid fa-utensils"></i> Refeições de <strong id="mealHistoryHeading"></strong></span>
+                        <label class="meal-history-date">Ver data <input type="date" class="form-control" id="mealHistoryDate"></label>
+                        <div id="dietTodayTotals" style="font-size: 0.85rem; font-weight: 700; color: var(--c-sunbeam);">
+                            Ainda sem refeições registradas.
+                        </div>
+                    </div>
+
+                    <div id="todayMealsContainer" style="display: flex; flex-direction: column; gap: 1.25rem;">
+                        <!-- Inserido dinamicamente via JS -->
+                    </div>
+                </div>
+
+                <div class="card recipe-suggestions-card">
+                    <div class="card-header"><span class="card-title"><i class="fa-solid fa-lightbulb"></i> Sugestões de refeições e receitas</span><span class="brand-tag">Contextuais às suas metas</span></div>
+                    <p class="recipe-estimate-note">Macros e calorias das ideias são estimativas; revise ingredientes e porções. Uma sugestão só entra no seu diário depois de você confirmar o consumo.</p>
+                    <div id="recipeSuggestions" class="recipe-suggestions-grid"><p>Complete seu perfil para receber sugestões adequadas ao seu objetivo.</p></div>
+                    <button class="btn btn-secondary" type="button" id="btnAskGeminiRecipes"><i class="fa-solid fa-brain"></i> Pedir outras ideias ao Gemini</button>
+                </div>
+            </section>
+
+            <!-- ==========================================
+                 VIEW 5: ATIVIDADE DIÁRIA
+                 ========================================== -->
+            <section class="view-section" id="view-smartwatch">
+                <div class="view-header">
+                    <div class="view-title-wrap">
+                        <h1>Smartwatch & Conexão de Dispositivos</h1>
+                        <p class="view-subtitle">Sem integração física de dispositivo: registre e confirme seus dados diários manualmente.</p>
+                    </div>
+                </div>
+
+                <div class="grid-cards">
+                    <!-- Dispositivo Conectado -->
+                    <div class="device-card">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div class="card-icon" style="width: 48px; height: 48px; font-size: 1.4rem;">
+                                <i class="fa-solid fa-clock"></i>
+                            </div>
+                            <div>
+                                <h3 style="font-size: 1.05rem;" id="watchDeviceName">Entrada manual</h3>
+                                    <div class="device-status-badge"><i class="fa-solid fa-pen-to-square"></i> Sem registro de hoje</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Passos Hoje -->
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">Passos do Dia</span>
+                            <i class="fa-solid fa-shoe-prints" style="color: var(--c-sunbeam);"></i>
+                        </div>
+                        <div class="stat-value" id="watchStepsDisplay">Sem registro de hoje</div>
+                        <div class="stat-sub" id="watchStepsMeta">Meta de passos não definida.</div>
+                    </div>
+
+                    <!-- Gasto Ativo -->
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">Calorias Ativas</span>
+                            <i class="fa-solid fa-fire-burner" style="color: var(--c-glow-core);"></i>
+                        </div>
+                        <div class="stat-value" id="watchActiveKcalDisplay">Sem registro de hoje</div>
+                        <div class="stat-sub" id="watchCaloriesMeta">Meta de calorias ativas não definida.</div>
+                    </div>
+                </div>
+
+                <!-- METAS E ENTRADA MANUAL DE PASSOS / CALORIAS -->
+                <div class="card" style="margin-top: 2rem;">
+                    <div class="card-header">
+                        <span class="card-title"><i class="fa-solid fa-sliders"></i> Metas e registro de hoje</span>
+                        <span class="brand-tag">Confirmar para atualizar</span>
+                    </div>
+
+                    <form id="smartwatchForm" class="smartwatch-entry-grid">
+                        <div class="form-group"><label class="form-label" for="goalStepsInput">Definir meta de passos</label><input type="number" min="0" class="form-control" id="goalStepsInput" placeholder="Ex.: 8000"></div>
+                        <div class="form-group"><label class="form-label" for="goalActiveKcalInput">Meta de calorias ativas</label><input type="number" min="0" class="form-control" id="goalActiveKcalInput" placeholder="Ex.: 400"></div>
+                        <div class="form-group"><label class="form-label" for="manualStepsInput">Quantos passos hoje?</label><input type="number" min="0" class="form-control" id="manualStepsInput" placeholder="Sem registro"></div>
+                        <div class="form-group"><label class="form-label" for="manualActiveKcalInput">Calorias ativas hoje (kcal)</label><input type="number" min="0" class="form-control" id="manualActiveKcalInput" placeholder="Sem registro"></div>
+                        <button class="btn btn-primary" id="btnSaveManualWatch" type="submit">
+                            <i class="fa-solid fa-check"></i> Salvar e Atualizar Balanço
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- ==========================================
+                 VIEW 6: EVOLUÇÃO DE PESO & MÉTRICAS
+                 ========================================== -->
+            <section class="view-section" id="view-evolution">
+                <div class="view-header">
+                    <div class="view-title-wrap">
+                        <h1>Evolução de Peso Corporal</h1>
+                        <p class="view-subtitle">Acompanhe a curva de progresso físico e correlação com o balanço calórico acumulado</p>
+                    </div>
+                </div>
+
+                <!-- FORMULÁRIO DE REGISTRO DE PESO -->
+                <div class="card" style="margin-bottom: 2rem;">
+                    <div class="card-header">
+                        <span class="card-title"><i class="fa-solid fa-weight-scale"></i> Registrar Nova Pesagem</span>
+                        <span class="status-pill"><i class="fa-solid fa-shield"></i> Validação contra datas futuras</span>
+                    </div>
+
+                    <form id="formWeightLog" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; align-items: flex-end;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label">Data da Pesagem</label>
+                            <input type="date" class="form-control" id="weightLogDate" required>
+                        </div>
+
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label">Peso (kg)</label>
+                            <input type="number" step="0.1" min="30" max="300" class="form-control" id="weightLogVal" placeholder="Ex: 80.5" required>
+                        </div>
+
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label">Observações (Opcional)</label>
+                            <input type="text" class="form-control" id="weightLogNotes" placeholder="Ex: Em jejum, pós-treino...">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" style="height: 44px;">
+                            <i class="fa-solid fa-plus"></i> Salvar Registro
+                        </button>
+                    </form>
+                </div>
+
+                <!-- GRÁFICO HISTÓRICO DE PESO -->
+                <div class="card" style="margin-bottom: 2rem;">
+                    <div class="card-header">
+                        <span class="card-title"><i class="fa-solid fa-chart-line"></i> Histórico de peso registrado vs meta</span>
+                        <span class="brand-tag" id="weightDeltaTag">Sem registros</span>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="chartWeightHistory"></canvas>
+                    </div>
+                </div>
+
+                <!-- HISTÓRICO EM TABELA -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title"><i class="fa-solid fa-clock-rotate-left"></i> Histórico Detalhado de Pesagens</span>
+                    </div>
+                    <table class="sets-table">
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Peso (kg)</th>
+                                <th>Variação</th>
+                                <th>Notas</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="weightLogsTableBody">
+                            <!-- Inserido dinamicamente via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- ==========================================
+                 VIEW 7: PERFIL & ONBOARDING & IMC TEMPO REAL
+                 ========================================== -->
+            <section class="view-section" id="view-profile">
+                <div class="view-header">
+                    <div class="view-title-wrap">
+                        <h1>Perfil do Atleta & Metas</h1>
+                        <p class="view-subtitle">Calculadora de IMC automática com diagnóstico em tempo real e parâmetros do algoritmo</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title"><i class="fa-solid fa-id-card"></i> Dados Pessoais & Metas do HACKTOON_DB</span>
+                        <span class="status-pill"><i class="fa-solid fa-calculator"></i> IMC em Tempo Real</span>
+                    </div>
+
+                    <!-- CALCULADORA DE IMC EM TEMPO REAL -->
+                    <div class="imc-meter-box">
+                        <div style="font-size: 0.85rem; color: var(--c-text-muted); text-transform: uppercase; font-weight: 700;">
+                            Índice de Massa Corporal (IMC) Atual
+                        </div>
+                        <div class="imc-val-display" id="profileImcVal">—</div>
+                        <div class="imc-status-badge" id="profileImcBadge" style="background: rgba(0, 255, 136, 0.2); color: #00ff88; border: 1px solid #00ff88;">
+                            Complete o onboarding
+                        <div id="exerciseProgressionSummary">Nenhuma execução registrada.</div>
+                    <form id="profileForm" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+                        <div class="form-group">
+                            <label class="form-label">Nome Completo</label>
+                            <input type="text" class="form-control" id="profName" required>
+                        </div>
+
+                        <div class="form-group"><label class="form-label" for="profAge">Idade</label><input type="number" min="15" max="100" class="form-control" id="profAge" required></div>
+
+                        <div class="form-group"><label class="form-label" for="profGender">Gênero para estimativa metabólica</label><select class="form-control" id="profGender"><option value="female">Feminino</option><option value="male">Masculino</option><option value="other">Outro / prefiro não informar</option></select></div>
+
+                        <div class="form-group">
+                            <label class="form-label">Peso Atual (kg)</label>
+                            <input type="number" step="0.1" min="30" max="300" class="form-control" id="profWeight" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Altura (cm)</label>
+                            <input type="number" min="100" max="250" class="form-control" id="profHeight" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Meta de Peso (kg)</label>
+                            <input type="number" step="0.1" min="30" max="300" class="form-control" id="profGoalWeight" placeholder="Opcional">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Meta Calórica Diária (kcal)</label>
+                            <input type="number" min="1000" max="8000" class="form-control" id="profGoalCal" required>
+                        </div>
+
+                        <div class="form-group"><label class="form-label" for="profActivity">Nível de atividade</label><select class="form-control" id="profActivity"><option value="sedentary">Sedentário</option><option value="light">Leve</option><option value="moderate">Moderado</option><option value="intense">Intenso</option><option value="athlete">Atleta</option></select></div>
+
+                        <div class="form-group">
+                            <label class="form-label">Meta Hídrica Diária (ml)</label>
+                            <input type="number" min="1000" max="8000" class="form-control" id="profGoalWater" required>
+                        </div>
+
+                        <div class="form-group"><label class="form-label" for="profGoalProtein">Meta de proteínas (g)</label><input type="number" min="0" class="form-control" id="profGoalProtein" required></div>
+                        <div class="form-group"><label class="form-label" for="profGoalCarbs">Meta de carboidratos (g)</label><input type="number" min="0" class="form-control" id="profGoalCarbs" required></div>
+                        <div class="form-group"><label class="form-label" for="profGoalFat">Meta de gorduras (g)</label><input type="number" min="0" class="form-control" id="profGoalFat" required></div>
+
+                        <div class="form-group">
+                            <label class="form-label">Objetivo Principal</label>
+                            <select class="form-control" id="profObjective">
+                                <option value="hipertrofia">Hipertrofia</option>
+                                <option value="emagrecimento">Emagrecimento</option>
+                                <option value="condicionamento">Condicionamento</option>
+                                <option value="fortalecimento">Fortalecimento</option>
+                                <option value="ganhar_peso">Ganhar Peso</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" style="align-self: flex-end;">
+                            <button type="submit" class="btn btn-primary" style="width: 100%; height: 44px;">
+                                <i class="fa-solid fa-floppy-disk"></i> Salvar Alterações
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- ==========================================================================
+         MODAL IMERSIVO: MODO "EM TREINO" (DIFERENCIAL DE EXECUÇÃO)
+         ========================================================================== -->
+    <div class="modal-overlay" id="modalInTraining">
+        <div class="modal-box">
+            <button class="modal-close-btn" id="btnCloseInTrainingModal"><i class="fa-solid fa-xmark"></i></button>
+
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; border-bottom: 1px solid rgba(255, 123, 43, 0.2); padding-bottom: 1rem;">
+                <div>
+                    <span class="brand-tag"><i class="fa-solid fa-bolt"></i> Modo "Em Treino" Interativo</span>
+                    <h2 style="font-size: 1.5rem; margin-top: 0.3rem;" id="modalExerciseTitle">Supino Reto com Barra</h2>
+                    <p style="font-size: 0.85rem; color: var(--c-glow-core);" id="modalExerciseTarget">Peitoral Maior • Barra Olímpica e Banco Reto</p>
+                </div>
+
+                <!-- BOTÃO DE SUBSTITUIÇÃO INTELIGENTE DE EXERCÍCIO (SE OCUPADO) -->
+                <button class="btn btn-secondary" id="btnSubstituteExercise" title="Aparelho ou banco ocupado? Troque por um movimento equivalente!">
+                    <i class="fa-solid fa-arrow-right-arrow-left"></i> Substituir Exercício Ocupado
+                </button>
+            </div>
+
+            <!-- ANIMAÇÃO DE EXECUÇÃO DO EXERCÍCIO (CSS KEYFRAMES) -->
+            <div style="margin: 1.25rem 0;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                    <span style="font-size: 0.75rem; font-weight: 700; color: var(--c-text-muted); text-transform: uppercase;">
+                        Ritmo & Padrão de Execução Cadenciada
+                    </span>
+                    <span style="font-size: 0.75rem; color: var(--c-glow-core);"><i class="fa-solid fa-eye"></i> Músculo Ativo</span>
+                </div>
+                <div class="exercise-anim-container">
+                    <div class="anim-muscles-target"></div>
+                    <div class="anim-bench-bar"></div>
+                </div>
+            </div>
+
+            <!-- CALCULADORA DE ANILHAS (BARBELL CALCULATOR) -->
+            <div class="barbell-calc-container">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.75rem;">
+                    <div>
+                        <span style="font-weight: 700; font-size: 0.9rem; color: var(--c-ardent);">
+                            <i class="fa-solid fa-calculator"></i> Calculadora Visual de Anilhas (Barra de 20kg)
+                        </span>
+                        <p style="font-size: 0.75rem; color: var(--c-text-muted);">Cálculo exato de anilhas necessárias por lado</p>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <label style="font-size: 0.8rem; font-weight: 600;">Carga Total:</label>
+                        <input type="number" min="20" step="2.5" class="set-input" id="barbellWeightInput" placeholder="kg" style="width: 80px;">
+                        <span style="font-size: 0.85rem; font-weight: 700;">kg</span>
+                    </div>
+                </div>
+
+                <!-- SLEEVE DA BARRA COM ANILHAS VISUAIS -->
+                <div class="barbell-sleeve-display" id="barbellVisualSleeve">
+                    <div class="barbell-shaft"></div>
+                    <div class="barbell-collar"></div>
+                    <!-- Anilhas renderizadas dinamicamente via JS -->
+                </div>
+
+                <div class="barbell-plate-tags" id="barbellPlateSummary">
+                    <!-- Resumo numérico ex: 1x 20kg, 1x 10kg por lado -->
+                </div>
+            </div>
+
+            <!-- CRONÔMETRO DE DESCANSO REGRESSIVO -->
+            <div class="rest-timer-box">
+                <div style="font-size: 0.8rem; font-weight: 700; color: var(--c-bliss); text-transform: uppercase; letter-spacing: 1px;">
+                    <i class="fa-solid fa-hourglass-half"></i> Cronômetro de Descanso
+                </div>
+                <div class="rest-timer-digits" id="restTimerDisplay">00:00</div>
+                <label class="rest-timer-duration">Tempo de descanso (segundos)<input type="number" min="1" step="1" id="restTimerInput" class="form-control" placeholder="Informe duração"></label>
+                <div class="rest-timer-controls">
+                    <button class="btn btn-secondary btn-icon" id="timerMinusBtn" title="-15s"><i class="fa-solid fa-minus"></i></button>
+                    <button class="btn btn-primary" id="timerPlayPauseBtn" style="padding: 0.6rem 1.5rem;"><i class="fa-solid fa-play"></i> Iniciar</button>
+                    <button class="btn btn-secondary btn-icon" id="timerPlusBtn" title="+30s"><i class="fa-solid fa-plus"></i></button>
+                    <button class="btn btn-secondary btn-icon" id="timerResetBtn" title="Resetar"><i class="fa-solid fa-rotate-left"></i></button>
+                    <button class="btn btn-secondary btn-icon" id="timerAudioToggle" title="Alarme Sonoro Ativado" style="color: var(--c-sunbeam);"><i class="fa-solid fa-volume-high"></i></button>
+                </div>
+            </div>
+
+            <!-- REGISTRO DE SÉRIES & HARD SETS -->
+            <div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-weight: 700; font-size: 0.95rem; color: var(--c-ardent);">
+                        <i class="fa-solid fa-list-ol"></i> Séries da Sessão Atual
+                    </span>
+                    <button class="btn btn-secondary" id="btnAddSetBtn" style="font-size: 0.75rem; padding: 0.35rem 0.75rem;">
+                        <i class="fa-solid fa-plus"></i> Adicionar Série
+                    </button>
+                </div>
+
+                <table class="sets-table">
+                    <thead>
+                        <tr>
+                            <th>Série</th>
+                            <th>Carga (kg)</th>
+                            <th>Repetições</th>
+                            <th>Hard Set (RPE 8+)</th>
+                            <th>Status Progressão</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inTrainingSetsTableBody">
+                        <!-- Linhas geradas via JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="margin-top: 1.5rem; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255, 123, 43, 0.15); padding-top: 1rem;">
+                <div id="exerciseProgressionSummary" style="font-size: 0.85rem; font-weight: 600;">Nenhuma execução registrada.</div>
+                <div style="display: flex; gap: 0.75rem;">
+                    <button class="btn btn-secondary" id="btnNextExerciseInModal"><i class="fa-solid fa-forward-step"></i> Próximo Exercício</button>
+                    <button class="btn btn-primary" id="btnSaveExerciseSets"><i class="fa-solid fa-check"></i> Salvar Exercício</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+         MODAL ONBOARDING (PRIMEIRO ACESSO)
+         ========================================================================== -->
+    <div class="modal-overlay onboarding-overlay" id="modalOnboarding">
+        <div class="modal-box onboarding-box">
+            <div class="onboarding-heading">
+                <span class="brand-tag">CONFIGURAÇÃO INICIAL · <span id="onboardingStepLabel">ETAPA 1 DE 4</span></span>
+                <h1 id="onboardingWelcomeTitle">Vamos configurar sua jornada</h1>
+                <p>Seus dados ficam no HACKTOON_DB. As metas são estimativas e podem ser ajustadas depois.</p>
+                <div class="onboarding-progress"><span id="onboardingProgressBar"></span></div>
+            </div>
+
+            <form id="onboardingForm" novalidate>
+                <section class="onboarding-step active" data-onboarding-step="1">
+                    <h2>Dados biométricos</h2>
+                    <div class="onboarding-fields">
+                        <div class="form-group"><label class="form-label" for="onboardName">Nome</label><input type="text" class="form-control" id="onboardName" required autocomplete="name"></div>
+                        <div class="form-group"><label class="form-label" for="onboardAge">Idade</label><input type="number" class="form-control" id="onboardAge" min="15" max="100" required></div>
+                        <div class="form-group"><label class="form-label" for="onboardGender">Gênero para fórmula metabólica</label><select class="form-control onboarding-calc-input" id="onboardGender" required><option value="">Selecione</option><option value="female">Feminino</option><option value="male">Masculino</option><option value="other">Outro / prefiro não informar</option></select></div>
+                        <div class="form-group"><label class="form-label" for="onboardWeight">Peso atual (kg)</label><input type="number" step="0.1" min="30" max="300" class="form-control onboarding-calc-input" id="onboardWeight" required></div>
+                        <div class="form-group"><label class="form-label" for="onboardHeight">Altura (cm)</label><input type="number" min="100" max="250" class="form-control onboarding-calc-input" id="onboardHeight" required></div>
+                    </div>
+                    <div class="imc-meter-box onboarding-imc"><span>IMC calculado</span><strong id="onboardingImcVal">—</strong><span class="imc-status-badge" id="onboardingImcBadge">Preencha peso e altura</span></div>
+                </section>
+
+                <section class="onboarding-step" data-onboarding-step="2">
+                    <h2>Atividade e objetivo</h2>
+                    <div class="onboarding-fields">
+                        <div class="form-group"><label class="form-label" for="onboardActivity">Nível de atividade atual</label><select class="form-control onboarding-calc-input" id="onboardActivity" required><option value="">Selecione</option><option value="sedentary">Sedentário</option><option value="light">Leve</option><option value="moderate">Moderado</option><option value="intense">Intenso</option><option value="athlete">Atleta</option></select></div>
+                        <div class="form-group"><label class="form-label" for="onboardFrequency">Frequência de treino (dias/semana)</label><select class="form-control" id="onboardFrequency" required><option value="">Selecione</option><option value="1">1 dia</option><option value="2">2 dias</option><option value="3">3 dias</option><option value="4">4 dias</option><option value="5">5 dias</option><option value="6">6 dias</option><option value="7">7 dias</option></select></div>
+                        <div class="form-group onboarding-full"><label class="form-label" for="onboardObjective">Objetivo principal</label><select class="form-control onboarding-calc-input" id="onboardObjective" required><option value="">Selecione</option><option value="hipertrofia">Hipertrofia</option><option value="emagrecimento">Emagrecimento</option><option value="condicionamento">Condicionamento</option><option value="fortalecimento">Fortalecimento</option><option value="ganhar_peso">Ganhar Peso</option></select></div>
+                    </div>
+                    <div class="onboarding-days"><span class="form-label">Quais dias deseja treinar?</span><div class="choice-grid days-choice">
+                        <label><input type="checkbox" name="trainingDay" value="1"><span>Segunda</span></label><label><input type="checkbox" name="trainingDay" value="2"><span>Terça</span></label><label><input type="checkbox" name="trainingDay" value="3"><span>Quarta</span></label><label><input type="checkbox" name="trainingDay" value="4"><span>Quinta</span></label><label><input type="checkbox" name="trainingDay" value="5"><span>Sexta</span></label><label><input type="checkbox" name="trainingDay" value="6"><span>Sábado</span></label><label><input type="checkbox" name="trainingDay" value="0"><span>Domingo</span></label>
+                    </div></div>
+                </section>
+
+                <section class="onboarding-step" data-onboarding-step="3">
+                    <h2>Focos e metas calculadas</h2>
+                    <div class="onboarding-days"><span class="form-label">Escolha um ou mais focos musculares</span><div class="choice-grid focus-choice">
+                        <label><input type="checkbox" name="trainingFocus" value="Glúteo"><span>Glúteo</span></label><label><input type="checkbox" name="trainingFocus" value="Quadríceps"><span>Quadríceps</span></label><label><input type="checkbox" name="trainingFocus" value="Peitoral"><span>Peitoral</span></label><label><input type="checkbox" name="trainingFocus" value="Costas"><span>Costas</span></label><label><input type="checkbox" name="trainingFocus" value="Ombros"><span>Ombros</span></label><label><input type="checkbox" name="trainingFocus" value="Braços"><span>Braços</span></label><label><input type="checkbox" name="trainingFocus" value="Abdômen"><span>Abdômen</span></label><label><input type="checkbox" name="trainingFocus" value="Cardio"><span>Cardio</span></label>
+                    </div></div>
+                    <div class="onboarding-fields onboarding-goals">
+                        <div><span>TDEE estimado</span><strong id="onboardTdee">— kcal</strong></div><div><span>Meta calórica</span><strong id="onboardGoalCalPreview">— kcal</strong></div><div><span>Proteínas</span><strong id="onboardProteinPreview">— g</strong></div><div><span>Carboidratos</span><strong id="onboardCarbsPreview">— g</strong></div><div><span>Gorduras</span><strong id="onboardFatPreview">— g</strong></div><div><span>Meta de água</span><strong id="onboardGoalWaterPreview">— ml</strong></div>
+                    </div>
+                    <p class="onboarding-hint">Estimativa Mifflin–St Jeor e água a 37,5 ml/kg. Você poderá editar as metas no perfil.</p>
+                </section>
+
+                <section class="onboarding-step" data-onboarding-step="4">
+                    <h2>Revise antes de começar</h2>
+                    <p class="onboarding-review" id="onboardingReview">Complete as etapas anteriores para revisar seu plano.</p>
+                    <div class="form-group onboarding-full"><label class="form-label" for="onboardGoalWeight">Meta de peso (opcional, kg)</label><input type="number" step="0.1" min="30" max="300" class="form-control" id="onboardGoalWeight" placeholder="Deixe vazio se não tiver meta"></div>
+                </section>
+
+                <div class="onboarding-error" id="onboardingError" role="alert" aria-live="polite"></div>
+                <div class="onboarding-actions"><button type="button" class="btn btn-secondary" id="onboardingBack" hidden>Voltar</button><span></span><button type="button" class="btn btn-primary" id="onboardingNext">Continuar <i class="fa-solid fa-arrow-right"></i></button><button type="submit" class="btn btn-primary" id="onboardingFinish" hidden>Salvar perfil <i class="fa-solid fa-check"></i></button></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+         DRAWER LATERAL: ASSISTENTE GEMINI INTEGRADO (COM DISPARO DE AÇÕES)
+         ========================================================================== -->
+    <div class="gemini-drawer" id="geminiDrawer">
+        <div class="gemini-drawer-header">
+            <div class="gemini-bot-info">
+                <div class="gemini-avatar">
+                    <i class="fa-solid fa-brain"></i>
+                </div>
+                <div>
+                    <div style="font-weight: 800; font-size: 0.95rem; color: var(--c-white);">Gemini Assistant</div>
+                    <div style="font-size: 0.7rem; color: var(--c-glow-core);"><i class="fa-solid fa-circle" style="font-size: 6px;"></i> Contexto HACKTOON_DB Ativo</div>
+                </div>
+            </div>
+            <div class="gemini-drawer-actions">
+                <button class="btn-icon" id="btnCloseGeminiDrawer" title="Fechar assistente"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+        </div>
+
+        <div class="gemini-chips-container">
+            <button class="quick-chip" onclick="askGeminiQuick('Sugira uma receita que caiba nas minhas metas de hoje')">Sugestão de receita</button>
+            <button class="quick-chip" onclick="askGeminiQuick('Registre 500 ml de água que já consumi hoje')">Registrar água consumida</button>
+            <button class="quick-chip" onclick="askGeminiQuick('Quero alterar minha meta diária de calorias')">Alterar meta calórica</button>
+            <button class="quick-chip" onclick="askGeminiQuick('Como está meu Score OTTER com os dados registrados?')">Analisar meus registros</button>
+        </div>
+
+        <div class="gemini-chat-body" id="geminiChatMessages">
+            <!-- Mensagens do Chat -->
+        </div>
+
+        <form class="gemini-chat-input-area" id="geminiChatForm">
+            <input type="text" class="gemini-input" id="geminiPromptInput" placeholder="Peça uma ação ou análise..." autocomplete="off">
+            <button type="submit" class="btn btn-primary btn-icon"><i class="fa-solid fa-paper-plane"></i></button>
+        </form>
+    </div>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <svg class="icon-sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+        <symbol id="icon-apple" viewBox="0 0 24 24"><path d="M12 8c-2.3-2-5.8-1.3-7 1.2-1.6 3 1.2 9.3 4.1 10.1 1.1.3 1.9-.5 2.9-.5s1.8.8 2.9.5c2.8-.8 5.5-6.4 4.2-9.6C18 7.1 14.3 6.5 12 8Z"/><path d="M12 8c-.4-2.5 1-4.3 3.6-5"/><path d="M13 5c1.7-1.4 3.1-1.1 4.1-.8"/></symbol>
+        <symbol id="icon-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></symbol>
+        <symbol id="icon-arrows-left-right" viewBox="0 0 24 24"><path d="M7 7 3 12l4 5M3 12h18M17 7l4 5-4 5"/></symbol>
+        <symbol id="icon-log-out" viewBox="0 0 24 24"><path d="M10 17l5-5-5-5M15 12H3"/><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"/></symbol>
+        <symbol id="icon-trending-up" viewBox="0 0 24 24"><path d="m3 17 6-6 4 4 8-8M15 7h6v6"/></symbol>
+        <symbol id="icon-trending-down" viewBox="0 0 24 24"><path d="m3 7 6 6 4-4 8 8M15 17h6v-6"/></symbol>
+        <symbol id="icon-arrow-up" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></symbol>
+        <symbol id="icon-bluetooth" viewBox="0 0 24 24"><path d="m7 7 10 10-5 5V2l5 5L7 17"/></symbol>
+        <symbol id="icon-bolt" viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 10-13h-7l1-7Z"/></symbol>
+        <symbol id="icon-droplet" viewBox="0 0 24 24"><path d="M12 3C9 7.5 5 11.3 5 15a7 7 0 0 0 14 0c0-3.7-4-7.5-7-12Z"/><path d="M9 16a3 3 0 0 0 3 3"/></symbol>
+        <symbol id="icon-brain" viewBox="0 0 24 24"><path d="M12 5a3 3 0 0 0-5.8-1A3.5 3.5 0 0 0 4 10a3.5 3.5 0 0 0 1 6.6A3.5 3.5 0 0 0 9 21h3V5Zm0 0a3 3 0 0 1 5.8-1A3.5 3.5 0 0 1 20 10a3.5 3.5 0 0 1-1 6.6A3.5 3.5 0 0 1 15 21h-3"/><path d="M8 8v2m-2 5h3m7-7v3m2 3h-3m-3-5v5"/></symbol>
+        <symbol id="icon-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></symbol>
+        <symbol id="icon-calculator" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 11h2m4 0h2m-8 4h2m4 0h2m-8 3h2m4 0h2"/></symbol>
+        <symbol id="icon-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18m-13 4h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></symbol>
+        <symbol id="icon-chart-column" viewBox="0 0 24 24"><path d="M4 20V11h4v9m4 0V4h4v16m4 0v-7h4v7M2 20h21"/></symbol>
+        <symbol id="icon-chart-pie" viewBox="0 0 24 24"><path d="M11 3a9 9 0 1 0 10 10h-9V3Z"/><path d="M15 3.5A9 9 0 0 1 20.5 9H15V3.5Z"/></symbol>
+        <symbol id="icon-check" viewBox="0 0 24 24"><path d="m5 12 5 5L20 7"/></symbol>
+        <symbol id="icon-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/></symbol>
+        <symbol id="icon-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5m0-8h.01"/></symbol>
+        <symbol id="icon-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+        <symbol id="icon-history" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 2.6-6.4L3 8"/><path d="M3 3v5h5m4-1v5l3 2"/></symbol>
+        <symbol id="icon-database" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></symbol>
+        <symbol id="icon-dumbbell" viewBox="0 0 24 24"><path d="M6 6v12m12-12v12M3 9v6m18-6v6M6 12h12"/></symbol>
+        <symbol id="icon-envelope" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 7 9-7"/></symbol>
+        <symbol id="icon-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
+        <symbol id="icon-flame" viewBox="0 0 24 24"><path d="M12 22a7 7 0 0 0 7-7c0-4-3-6-4-10-2 2-2 4-2 5-2-2-3-5-3-8C7 6 5 9 5 15a7 7 0 0 0 7 7Z"/><path d="M12 22a3 3 0 0 0 3-3c0-2-1-3-2-4-1 2-4 3-4 5a3 3 0 0 0 3 2Z"/></symbol>
+        <symbol id="icon-save" viewBox="0 0 24 24"><path d="M5 3h12l4 4v14H3V3h2Z"/><path d="M7 3v6h10V3M7 21v-8h10v8"/></symbol>
+        <symbol id="icon-forward" viewBox="0 0 24 24"><path d="m4 5 11 7-11 7V5Zm15 0v14"/></symbol>
+        <symbol id="icon-heart-pulse" viewBox="0 0 24 24"><path d="M20.8 8.6c0 5.4-8.8 11-8.8 11s-8.8-5.6-8.8-11A4.6 4.6 0 0 1 12 6a4.6 4.6 0 0 1 8.8 2.6Z"/><path d="M3 12h5l2-3 3 6 2-3h6"/></symbol>
+        <symbol id="icon-hourglass" viewBox="0 0 24 24"><path d="M5 3h14M5 21h14M7 3v4a5 5 0 0 0 2 4l3 1 3-1a5 5 0 0 0 2-4V3m0 18v-4a5 5 0 0 0-2-4l-3-1-3 1a5 5 0 0 0-2 4v4"/></symbol>
+        <symbol id="icon-id-card" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M6 16c.7-2 5.3-2 6 0m3-6h3m-3 4h3"/></symbol>
+        <symbol id="icon-key" viewBox="0 0 24 24"><circle cx="8" cy="15" r="5"/><path d="m12 12 9-9m-4 4 3 3m-6-1 3 3"/></symbol>
+        <symbol id="icon-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Zm-9 9 9 5 9-5m-18 5 9 5 9-5"/></symbol>
+        <symbol id="icon-list-check" viewBox="0 0 24 24"><path d="m3 6 2 2 4-4m-6 9 2 2 4-4m3-4h9m-9 6h9m-9 6h9"/></symbol>
+        <symbol id="icon-list-ol" viewBox="0 0 24 24"><path d="M10 6h11M10 12h11M10 18h11M3 5h2v4m-2 0h3m-3 5c0-2 3-2 3 0s-3 2-3 4h3"/></symbol>
+        <symbol id="icon-lock" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 5v2"/></symbol>
+        <symbol id="icon-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+        <symbol id="icon-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+        <symbol id="icon-send" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4 20-7ZM22 2 11 13"/></symbol>
+        <symbol id="icon-pen" viewBox="0 0 24 24"><path d="m15 5 4 4M4 20l4-.8L20 7a2.8 2.8 0 0 0-4-4L4 15l-0 5Z"/></symbol>
+        <symbol id="icon-walking" viewBox="0 0 24 24"><circle cx="13" cy="4" r="2"/><path d="m12 7-3 5 4 2 2 6m-6-8-3 5-3 1m10-4 4-3 3 2m-9-1-4 7"/></symbol>
+        <symbol id="icon-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></symbol>
+        <symbol id="icon-play" viewBox="0 0 24 24"><path d="m7 4 13 8-13 8V4Z"/></symbol>
+        <symbol id="icon-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+        <symbol id="icon-rocket" viewBox="0 0 24 24"><path d="M5 15c-2 1-2 5-2 5s4 0 5-2m2-3-3-3c2-6 7-9 14-10-1 7-4 12-10 14l-1-1Z"/><circle cx="15" cy="9" r="2"/></symbol>
+        <symbol id="icon-rotate" viewBox="0 0 24 24"><path d="M20 7v5h-5M4 17v-5h5m-3-4a8 8 0 0 1 13-2l1 1M4 17l1 1a8 8 0 0 0 13-2"/></symbol>
+        <symbol id="icon-rotate-left" viewBox="0 0 24 24"><path d="M4 7v5h5M20 17v-5h-5M6 12a7 7 0 0 1 12-5l2 2M18 12a7 7 0 0 1-12 5l-2-2"/></symbol>
+        <symbol id="icon-scale" viewBox="0 0 24 24"><path d="M12 3v17m-8 1h16M4 7h16M12 7l-5 8h10l-5-8Zm-8 0L2 12h4L4 7Zm16 0-2 5h4l-2-5Z"/></symbol>
+        <symbol id="icon-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"/><path d="m9 12 2 2 4-4"/></symbol>
+        <symbol id="icon-footprints" viewBox="0 0 24 24"><path d="M7 5c1.5 0 2 2 2 4s-1 5-3 5-3-2-3-4 1-5 4-5Zm10 5c1.5 0 2 2 2 4s-1 5-3 5-3-2-3-4 1-5 4-5ZM4 17l3-1m10-3 3-1"/></symbol>
+        <symbol id="icon-sliders" viewBox="0 0 24 24"><path d="M4 6h8m4 0h4M4 12h3m4 0h9M4 18h8m4 0h4"/><circle cx="14" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="14" cy="18" r="2"/></symbol>
+        <symbol id="icon-stopwatch" viewBox="0 0 24 24"><circle cx="12" cy="14" r="8"/><path d="M12 10v4l3 2m-5-13h4m-2 0v3m6 1 2-2"/></symbol>
+        <symbol id="icon-strava" viewBox="0 0 24 24"><path d="m8 3 6 11h-4l4 7 7-13h-5l-3-5H8Z"/></symbol>
+        <symbol id="icon-trash" viewBox="0 0 24 24"><path d="M3 6h18m-2 0-1 15H6L5 6m3 0V4h8v2m-6 4v7m4-7v7"/></symbol>
+        <symbol id="icon-bed" viewBox="0 0 24 24"><path d="M3 18V6m0 9h18v6M3 11h5a3 3 0 0 1 3 3v1m0-4h6a4 4 0 0 1 4 4"/></symbol>
+        <symbol id="icon-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+        <symbol id="icon-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.6a8 8 0 0 1-1.6.9l-.3 1.8h-2.8l-.3-1.8a8 8 0 0 1-1.6-.9l-1.7.6-1.4-2.4 1.4-1.1a7 7 0 0 1 0-1.9L6.1 12l1.4-2.4 1.7.6a8 8 0 0 1 1.6-.9l.3-1.8h2.8l.3 1.8a8 8 0 0 1 1.6.9l1.7-.6 1.4 2.4-1.4 1.1a7 7 0 0 1-.1 1.9Z"/></symbol>
+        <symbol id="icon-utensils" viewBox="0 0 24 24"><path d="M7 3v7m-3-7v4a3 3 0 0 0 6 0V3m-3 7v11m10-18v18m0-18c3 2 3 7 0 9"/></symbol>
+        <symbol id="icon-volume" viewBox="0 0 24 24"><path d="M4 10v4h4l5 4V6l-5 4H4Z"/><path d="M17 9a5 5 0 0 1 0 6m3-9a9 9 0 0 1 0 12"/></symbol>
+        <symbol id="icon-volume-off" viewBox="0 0 24 24"><path d="M4 10v4h4l5 4V6l-5 4H4Zm13 1 5 5m0-5-5 5"/></symbol>
+        <symbol id="icon-wand" viewBox="0 0 24 24"><path d="m4 20 12-12 4 4L8 24l-4-4Zm11-13 1-3m4 2 3-1m-2 5 2 2M5 3v3m-2-2h4"/></symbol>
+        <symbol id="icon-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+        <symbol id="icon-warning" viewBox="0 0 24 24"><path d="M10.3 4.3 2.6 18a2 2 0 0 0 1.7 3h15.4a2 2 0 0 0 1.7-3L13.7 4.3a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4m0 4h.01"/></symbol>
+        <symbol id="icon-weight" viewBox="0 0 24 24"><path d="M8 4h8l2 17H6L8 4Zm2 0a2 2 0 0 1 4 0m-2 4v4m-2-2h4"/></symbol>
+    </svg>
+
+    <!-- SCRIPTS MANDATÓRIOS -->
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+    <script src="renato-training.js"></script>
+    <script src="demo-access.js"></script>
+</body>
+</html>
