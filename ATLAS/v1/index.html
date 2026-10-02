@@ -8,7 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
     
     <!-- CSS Customizado -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=20261002-food-dropdown">
 </head>
 <body>
 
@@ -135,7 +135,7 @@
                     </li>
                     <li class="nav-item" data-view="workouts">
                         <i class="fa-solid fa-dumbbell"></i>
-                        <span>Treino & "Em Treino"</span>
+                        <span>Planejamento de Treinos</span>
                     </li>
                     <li class="nav-item" data-view="routine">
                         <i class="fa-solid fa-calendar-week"></i>
@@ -222,7 +222,7 @@
                         <p class="view-subtitle" id="dashDateSub">Visão holística em tempo real de treino, nutrição e biométricas</p>
                     </div>
                     <button class="btn btn-primary" id="btnQuickStartWorkout">
-                        <i class="fa-solid fa-play"></i> Iniciar Modo "Em Treino"
+                        <i class="fa-solid fa-calendar-plus"></i> Planejar Treino
                     </button>
                 </div>
 
@@ -356,48 +356,23 @@
                             </p>
                         </div>
                         <button class="btn btn-primary" id="btnLaunchWorkoutFromDash">
-                            <i class="fa-solid fa-play"></i> Iniciar Treino Agora
+                            <i class="fa-solid fa-dumbbell"></i> Montar Treino
                         </button>
                     </div>
                 </div>
             </section>
 
             <!-- ==========================================
-                 VIEW 2: MÓDULO DE TREINO & "EM TREINO"
+                 VIEW 2: PLANEJAMENTO E REGISTRO DE TREINOS
                  ========================================== -->
             <section class="view-section" id="view-workouts">
                 <div class="view-header">
                     <div class="view-title-wrap">
-                        <h1>Sessão de Treino & Execução</h1>
-                        <p class="view-subtitle">Controle de sobrecarga progressiva, calculadora de anilhas e substituição inteligente</p>
-                    </div>
-                    <button class="btn btn-primary" id="btnStartWorkoutMode">
-                        <i class="fa-solid fa-bolt"></i> Abrir Modo "Em Treino"
-                    </button>
-                </div>
-
-                <div class="workout-active-banner">
-                    <div>
-                        <span class="brand-tag" style="background: rgba(0,0,0,0.4);"><i class="fa-solid fa-fire"></i> Treino em Destaque</span>
-                        <h2 style="font-size: 1.4rem; margin-top: 0.4rem;" id="workoutBannerTitle">Sem treino programado</h2>
-                        <p style="font-size: 0.85rem; opacity: 0.9;" id="workoutBannerStats">Configure seus dias e focos para planejar treinos.</p>
-                    </div>
-                    <button class="btn btn-magic" id="btnEnterWorkoutInteractive">
-                        <i class="fa-solid fa-play"></i> Continuar Treino
-                    </button>
-                </div>
-
-                <!-- LISTA DE EXERCÍCIOS DA SESSÃO ATUAL -->
-                <div class="card" style="margin-bottom: 2rem;">
-                    <div class="card-header">
-                        <span class="card-title"><i class="fa-solid fa-list-check"></i> Exercícios da Sessão Atual</span>
-                        <span style="font-size: 0.8rem; color: var(--c-text-muted);">Classificação de progressão automática (>103% Evoluindo)</span>
-                    </div>
-
-                    <div id="workoutExercisesList" style="display: flex; flex-direction: column; gap: 1rem;">
-                        <!-- Inserido dinamicamente via JS -->
+                        <h1>Planejamento de Treinos</h1>
+                        <p class="view-subtitle">Monte cada dia do seu jeito e registre a sessão completa em poucos passos.</p>
                     </div>
                 </div>
+                <div id="renatoTrainingMount"></div>
 
                 <!-- PROGRESSÃO DE VOLUME HISTÓRICO -->
                 <div class="card">
@@ -438,6 +413,13 @@
                     </div>
 
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+                        <div class="form-group">
+                            <label class="form-label" for="editorDayPlan">Treino planejado</label>
+                            <select class="form-control" id="editorDayPlan">
+                                <option value="">Sem treino vinculado</option>
+                            </select>
+                        </div>
+
                         <div class="form-group">
                             <label class="form-label">Foco Muscular / Grupos Principais</label>
                             <input type="text" class="form-control" id="editorDayFocus" placeholder="Ex: Peito, Tríceps & Ombro Anterior">
@@ -771,10 +753,8 @@
         </main>
     </div>
 
-    <!-- ==========================================================================
-         MODAL IMERSIVO: MODO "EM TREINO" (DIFERENCIAL DE EXECUÇÃO)
-         ========================================================================== -->
-    <div class="modal-overlay" id="modalInTraining">
+    <!-- Modo "Em Treino" preservado temporariamente como template inativo para uma futura revisão. -->
+    <template id="legacyInTrainingTemplate">
         <div class="modal-box">
             <button class="modal-close-btn" id="btnCloseInTrainingModal"><i class="fa-solid fa-xmark"></i></button>
 
@@ -885,7 +865,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </template>
 
     <!-- ==========================================================================
          MODAL ONBOARDING (PRIMEIRO ACESSO)
@@ -1054,9 +1034,10 @@
     </svg>
 
     <!-- SCRIPTS MANDATÓRIOS -->
-    <script src="data.js"></script>
-    <script src="app.js"></script>
-    <script src="renato-training.js"></script>
+    <script src="foods.js?v=20261002-taco"></script>
+    <script src="data.js?v=20261002-taco"></script>
+    <script src="app.js?v=20261002-routine-planner"></script>
+    <script src="renato-training.js?v=20261002-routine-planner"></script>
     <script src="demo-access.js"></script>
 </body>
 </html>

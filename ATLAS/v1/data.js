@@ -7,7 +7,7 @@
 // 1. TABELA TACO (Tabela Brasileira de Composição de Alimentos)
 // Valores nutricionais médios por 100g de alimento
 // ==========================================
-const TACO_DATABASE = [
+const LEGACY_TACO_DATABASE = [
   // --- CARNES, AVES E PEIXES ---
   { id: 'taco_01', name: 'Peito de Frango grelhado/cozido', category: 'Aves', calories: 159, protein: 31.5, carbs: 0.0, fat: 2.5, fiber: 0.0, defaultServing: 150 },
   { id: 'taco_02', name: 'Patinho bovino grelhado', category: 'Carnes', calories: 219, protein: 35.9, carbs: 0.0, fat: 7.3, fiber: 0.0, defaultServing: 150 },
@@ -58,6 +58,10 @@ const TACO_DATABASE = [
   { id: 'taco_39', name: 'Lenteilha cozida', category: 'Leguminosas', calories: 93, protein: 6.3, carbs: 16.3, fat: 0.5, fiber: 7.9, defaultServing: 120 },
   { id: 'taco_40', name: 'Tofu firme tradicional', category: 'Leguminosas', calories: 76, protein: 8.1, carbs: 1.9, fat: 4.8, fiber: 0.3, defaultServing: 100 }
 ];
+
+// foods.js fornece o catálogo ampliado; a lista legada mantém o app funcional
+// caso este arquivo seja aberto isoladamente durante o desenvolvimento.
+const TACO_DATABASE = window.TACO_DATABASE || LEGACY_TACO_DATABASE;
 
 // ==========================================
 // 2. BANCO DE EXERCÍCIOS & SUBSTITUIÇÕES EQUIVALENTES
