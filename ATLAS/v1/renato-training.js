@@ -76,6 +76,11 @@
         .renato-custom-item strong, .renato-history-item strong { display: block; font-size: .76rem; }
         .renato-custom-item small, .renato-history-item small { color: var(--c-text-muted); font-size: .67rem; }
         .renato-history-list { display: grid; gap: .45rem; }
+        .renato-progression-list { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .45rem; }
+        .renato-progression-badge { display: inline-flex; align-items: center; gap: .25rem; padding: .22rem .45rem; border-radius: 999px; background: rgba(255,255,255,.06); color: var(--c-text-muted); font-size: .61rem; font-weight: 750; }
+        .renato-progression-badge.is-evolving { background: rgba(34,197,94,.14); color: #86efac; }
+        .renato-progression-badge.is-stagnant { background: rgba(255,158,0,.14); color: var(--c-glow-core); }
+        .renato-progression-badge.is-regressing { background: rgba(255,51,102,.14); color: #fda4af; }
         @media (max-width: 1050px) {
             .renato-planner-grid, .renato-session-layout { grid-template-columns: 1fr; }
             .renato-library-list { max-height: 300px; }
@@ -422,6 +427,20 @@
             const copy = createElement('div');
             copy.appendChild(createElement('strong', '', workout.name || 'Treino'));
             copy.appendChild(createElement('small', '', `${new Date(`${workout.date}T12:00:00`).toLocaleDateString('pt-BR')} · ${executions.length} exercício${executions.length === 1 ? '' : 's'} · ${totalVolume.toLocaleString('pt-BR')} kg de volume`));
+            const progressionList = createElement('div', 'renato-progression-list');
+            executions.forEach(execution => {
+                const status = execution.comparisonStatus || 'Sem histórico';
+                const statusClass = status === 'Evoluindo'
+                    ? 'is-evolving'
+                    : status === 'Estagnado'
+                        ? 'is-stagnant'
+                        : status === 'Regredindo'
+                            ? 'is-regressing'
+                            : '';
+                const badge = createElement('span', `renato-progression-badge ${statusClass}`, `${execution.exerciseName || 'Exercício'}: ${status}`);
+                progressionList.appendChild(badge);
+            });
+            if (executions.length) copy.appendChild(progressionList);
             item.appendChild(copy);
             list.appendChild(item);
         });

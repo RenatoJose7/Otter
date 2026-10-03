@@ -27,7 +27,7 @@
                 <div class="auth-feature-list">
                     <div><i class="fa-solid fa-chart-line"></i><span>Acompanhe sua evolução</span></div>
                     <div><i class="fa-solid fa-dumbbell"></i><span>Organize seus treinos</span></div>
-                    <div><i class="fa-solid fa-brain"></i><span>Converse com seu assistente IA</span></div>
+                    <div><i class="fa-solid fa-brain"></i><span>Converse com o Ottinho</span></div>
                 </div>
                 <div class="auth-orb auth-orb-one"></div>
                 <div class="auth-orb auth-orb-two"></div>
@@ -109,7 +109,7 @@
         <div class="topbar-actions">
             <button class="btn btn-gemini" id="btnToggleGemini">
                 <i class="fa-solid fa-brain"></i>
-                <span>Assistente IA</span>
+                <span>Ottinho</span>
             </button>
             <button class="btn btn-secondary auth-logout" id="btnLogout" title="Sair da conta">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i><span>Sair</span>
@@ -127,7 +127,7 @@
                 <ul class="nav-list">
                     <li class="nav-item active" data-view="ai-home">
                         <i class="fa-solid fa-wand-magic-sparkles"></i>
-                        <span>Assistente Gemini</span>
+                        <span>Ottinho</span>
                     </li>
                     <li class="nav-item" data-view="dashboard">
                         <i class="fa-solid fa-chart-pie"></i>
@@ -136,10 +136,6 @@
                     <li class="nav-item" data-view="workouts">
                         <i class="fa-solid fa-dumbbell"></i>
                         <span>Planejamento de Treinos</span>
-                    </li>
-                    <li class="nav-item" data-view="routine">
-                        <i class="fa-solid fa-calendar-week"></i>
-                        <span>Rotina Semanal</span>
                     </li>
                     <li class="nav-item" data-view="diet">
                         <i class="fa-solid fa-utensils"></i>
@@ -173,16 +169,16 @@
         <!-- CONTEÚDO PRINCIPAL (SPA VIEWS) -->
         <main class="main-content">
 
-            <!-- HOME: ASSISTENTE GEMINI -->
+            <!-- HOME: OTTINHO -->
             <section class="view-section ai-home-view active" id="view-ai-home">
                 <div class="ai-home-content">
                     <div class="ai-home-heading">
                         <h1 id="aiHomeGreeting">Olá! O que vamos evoluir hoje?</h1>
-                        <p>Converse sobre seu treino, alimentação e progresso. O Gemini pode usar seus dados do HACKTOON para contextualizar as respostas.</p>
+                        <p>Converse sobre seu treino, alimentação e progresso. O Ottinho usa seus dados do OTTER para contextualizar as respostas.</p>
                     </div>
 
                     <form id="aiHomeForm" class="ai-home-composer">
-                        <label class="sr-only" for="aiHomePrompt">Mensagem para o Gemini</label>
+                        <label class="sr-only" for="aiHomePrompt">Mensagem para o Ottinho</label>
                         <textarea id="aiHomePrompt" rows="3" placeholder="Pergunte qualquer coisa sobre seu treino, dieta ou evolução…" required></textarea>
                         <div class="ai-home-composer-footer">
                             <button class="btn btn-primary ai-home-send" type="submit">
@@ -208,7 +204,7 @@
                         <button type="button" data-open-view="diet">Dieta</button>
                         <button type="button" data-open-view="evolution">Evolução</button>
                     </div>
-                    <p class="ai-home-disclaimer">A chave Gemini de demonstração é definida em app.js e acompanha esta cópia do site. Ela fica visível para quem tiver acesso aos arquivos. Suas mensagens e o contexto resumido são enviados ao Google. A IA pode cometer erros; confira recomendações de saúde com um profissional.</p>
+                    <p class="ai-home-disclaimer">O Ottinho usa uma integração de IA de demonstração definida em app.js. Suas mensagens e o contexto resumido são enviados ao provedor de IA. As respostas podem conter erros; confira recomendações de saúde com um profissional.</p>
                 </div>
             </section>
 
@@ -221,9 +217,14 @@
                         <h1 id="dashGreeting">Painel de Performance</h1>
                         <p class="view-subtitle" id="dashDateSub">Visão holística em tempo real de treino, nutrição e biométricas</p>
                     </div>
-                    <button class="btn btn-primary" id="btnQuickStartWorkout">
-                        <i class="fa-solid fa-calendar-plus"></i> Planejar Treino
-                    </button>
+                    <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                        <button class="btn btn-secondary" type="button" id="btnLoadDemoData">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Carregar demo de 7 dias
+                        </button>
+                        <button class="btn btn-primary" id="btnQuickStartWorkout">
+                            <i class="fa-solid fa-calendar-plus"></i> Planejar Treino
+                        </button>
+                    </div>
                 </div>
 
                 <!-- SCORE OTTER HERO CARD (NÚCLEO PRINCIPAL) -->
@@ -317,6 +318,15 @@
                             <div class="progress-bar-fill" id="dashStepsBar" style="width: 0%;"></div>
                         </div>
                     </button>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title"><i class="fa-solid fa-chart-line"></i> Evolução Corporal</span>
+                            <div class="card-icon"><i class="fa-solid fa-weight-scale"></i></div>
+                        </div>
+                        <div class="stat-value" id="dashBodyEvolution">Sem medidas</div>
+                        <div class="stat-sub" id="dashBodyEvolutionSub">Registre medidas opcionais no Perfil para complementar o peso.</div>
+                    </div>
                 </div>
 
                 <!-- GRÁFICOS DO DASHBOARD (CHART.JS) -->
@@ -346,7 +356,6 @@
                 <div class="card">
                     <div class="card-header">
                         <span class="card-title"><i class="fa-solid fa-bullseye"></i> Foco Programado para Hoje</span>
-                        <button class="btn btn-secondary" id="btnGoToRoutine"><i class="fa-solid fa-pen-to-square"></i> Editar Rotina</button>
                     </div>
                     <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
                         <div>
@@ -382,60 +391,6 @@
                     </div>
                     <div class="chart-wrapper">
                         <canvas id="chartVolumeProgression"></canvas>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ==========================================
-                 VIEW 3: ROTINA SEMANAL (CALENDÁRIO INTERATIVO)
-                 ========================================== -->
-            <section class="view-section" id="view-routine">
-                <div class="view-header">
-                    <div class="view-title-wrap">
-                        <h1>Calendário Semanal & Foco de Treino</h1>
-                        <p class="view-subtitle">Defina o foco de cada dia com gravação e persistência instantânea no HACKTOON_DB</p>
-                    </div>
-                    <button class="btn btn-secondary" id="btnResetRoutineDefaults">
-                        <i class="fa-solid fa-rotate-left"></i> Restaurar meu calendário
-                    </button>
-                </div>
-
-                <!-- GRID DOS 7 DIAS (SEGUNDA A DOMINGO) -->
-                <div class="week-grid" id="weekRoutineGrid">
-                    <!-- Renderizado dinamicamente via JS -->
-                </div>
-
-                <!-- FORMULÁRIO DE EDIÇÃO RÁPIDA DO DIA SELECIONADO -->
-                <div class="card" id="routineEditorCard">
-                    <div class="card-header">
-                        <span class="card-title"><i class="fa-solid fa-pen"></i> Editar Foco do Dia: <strong id="editorDayName" style="color: var(--c-sunbeam);">Segunda-feira</strong></span>
-                        <span class="status-pill"><i class="fa-solid fa-floppy-disk"></i> Salva automaticamente</span>
-                    </div>
-
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
-                        <div class="form-group">
-                            <label class="form-label" for="editorDayPlan">Treino planejado</label>
-                            <select class="form-control" id="editorDayPlan">
-                                <option value="">Sem treino vinculado</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Foco Muscular / Grupos Principais</label>
-                            <input type="text" class="form-control" id="editorDayFocus" placeholder="Ex: Peito, Tríceps & Ombro Anterior">
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Meta de Séries Efetivas</label>
-                            <input type="number" min="0" max="40" class="form-control" id="editorDaySets" placeholder="Ex: 18">
-                        </div>
-
-                        <div class="form-group" style="display: flex; align-items: center; gap: 0.75rem; margin-top: 1.5rem;">
-                            <input type="checkbox" id="editorDayRestCheck" style="width: 20px; height: 20px; accent-color: var(--c-sunbeam); cursor: pointer;">
-                            <label for="editorDayRestCheck" style="font-size: 0.9rem; font-weight: 600; cursor: pointer;">
-                                Dia de Descanso (Rest Day / Recuperação Ativa)
-                            </label>
-                        </div>
                     </div>
                 </div>
             </section>
@@ -522,7 +477,7 @@
                     <div class="card-header"><span class="card-title"><i class="fa-solid fa-lightbulb"></i> Sugestões de refeições e receitas</span><span class="brand-tag">Contextuais às suas metas</span></div>
                     <p class="recipe-estimate-note">Macros e calorias das ideias são estimativas; revise ingredientes e porções. Uma sugestão só entra no seu diário depois de você confirmar o consumo.</p>
                     <div id="recipeSuggestions" class="recipe-suggestions-grid"><p>Complete seu perfil para receber sugestões adequadas ao seu objetivo.</p></div>
-                    <button class="btn btn-secondary" type="button" id="btnAskGeminiRecipes"><i class="fa-solid fa-brain"></i> Pedir outras ideias ao Gemini</button>
+                    <button class="btn btn-secondary" type="button" id="btnAskGeminiRecipes"><i class="fa-solid fa-brain"></i> Pedir outras ideias ao Ottinho</button>
                 </div>
             </section>
 
@@ -589,6 +544,7 @@
                         </button>
                     </form>
                 </div>
+
             </section>
 
             <!-- ==========================================
@@ -748,6 +704,25 @@
                             </button>
                         </div>
                     </form>
+                </div>
+
+                <div class="card" style="margin-top: 1.5rem;">
+                    <div class="card-header">
+                        <span class="card-title"><i class="fa-solid fa-chart-line"></i> Medidas Corporais</span>
+                        <span class="brand-tag">Opcional · atualização semanal</span>
+                    </div>
+                    <p style="font-size: 0.85rem; color: var(--c-text-muted); margin-bottom: 1rem;">Peso não conta toda a história. Registre somente as medidas que quiser acompanhar para enxergar mudanças de composição corporal.</p>
+                    <form id="bodyMeasurementsForm" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; align-items: end;">
+                        <div class="form-group"><label class="form-label" for="bodyMeasurementDate">Data</label><input type="date" class="form-control" id="bodyMeasurementDate" required></div>
+                        <div class="form-group"><label class="form-label" for="bodyWaist">Cintura (cm)</label><input type="number" min="0" step="0.1" class="form-control" id="bodyWaist" placeholder="Opcional"></div>
+                        <div class="form-group"><label class="form-label" for="bodyHip">Quadril (cm)</label><input type="number" min="0" step="0.1" class="form-control" id="bodyHip" placeholder="Opcional"></div>
+                        <div class="form-group"><label class="form-label" for="bodyChest">Peito (cm)</label><input type="number" min="0" step="0.1" class="form-control" id="bodyChest" placeholder="Opcional"></div>
+                        <div class="form-group"><label class="form-label" for="bodyArm">Braço (cm)</label><input type="number" min="0" step="0.1" class="form-control" id="bodyArm" placeholder="Opcional"></div>
+                        <div class="form-group"><label class="form-label" for="bodyThigh">Coxa (cm)</label><input type="number" min="0" step="0.1" class="form-control" id="bodyThigh" placeholder="Opcional"></div>
+                        <div class="form-group"><label class="form-label" for="bodyCalf">Panturrilha (cm)</label><input type="number" min="0" step="0.1" class="form-control" id="bodyCalf" placeholder="Opcional"></div>
+                        <div class="form-group"><button type="submit" class="btn btn-primary" style="width: 100%; height: 44px;"><i class="fa-solid fa-floppy-disk"></i> Salvar medidas</button></div>
+                    </form>
+                    <p id="bodyMeasurementsSummary" style="font-size: 0.82rem; color: var(--c-ardent); margin-top: 1rem;">Nenhuma medida corporal registrada.</p>
                 </div>
             </section>
         </main>
@@ -928,7 +903,7 @@
     </div>
 
     <!-- ==========================================================================
-         DRAWER LATERAL: ASSISTENTE GEMINI INTEGRADO (COM DISPARO DE AÇÕES)
+         DRAWER LATERAL: OTTINHO INTEGRADO (COM DISPARO DE AÇÕES)
          ========================================================================== -->
     <div class="gemini-drawer" id="geminiDrawer">
         <div class="gemini-drawer-header">
@@ -937,12 +912,12 @@
                     <i class="fa-solid fa-brain"></i>
                 </div>
                 <div>
-                    <div style="font-weight: 800; font-size: 0.95rem; color: var(--c-white);">Gemini Assistant</div>
+                    <div style="font-weight: 800; font-size: 0.95rem; color: var(--c-white);">Ottinho</div>
                     <div style="font-size: 0.7rem; color: var(--c-glow-core);"><i class="fa-solid fa-circle" style="font-size: 6px;"></i> Contexto HACKTOON_DB Ativo</div>
                 </div>
             </div>
             <div class="gemini-drawer-actions">
-                <button class="btn-icon" id="btnCloseGeminiDrawer" title="Fechar assistente"><i class="fa-solid fa-xmark"></i></button>
+                <button class="btn-icon" id="btnCloseGeminiDrawer" title="Fechar Ottinho"><i class="fa-solid fa-xmark"></i></button>
             </div>
         </div>
 

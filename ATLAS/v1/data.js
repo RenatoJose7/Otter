@@ -657,7 +657,7 @@ function legacyDemoDataFixtureUnused() {
     {
       id: 'msg_01',
       sender: 'gemini',
-      text: 'Olá Lucas! Eu sou o assistente inteligente da HACKTOON com acesso em tempo real ao seu banco de dados. Como posso acelerar seus resultados hoje? Você pode me pedir para substituir refeições, trocar exercícios ocupados ou analisar seu progresso!',
+      text: 'Olá Lucas! Eu sou o Ottinho, seu assistente inteligente com acesso em tempo real aos dados do OTTER. Como posso acelerar seus resultados hoje? Você pode me pedir para substituir refeições, trocar exercícios ocupados ou analisar seu progresso!',
       timestamp: new Date(today.getTime() - 2 * 3600 * 1000).toISOString(),
       actionTriggered: null
     }

@@ -901,9 +901,17 @@
     transform: translateY(30px); /* Leve ajuste de altura vertical */
 }
 
+.hero-logo-img {
+    width: clamp(150px, 16vw, 230px);
+    height: auto;
+    display: block;
+    margin: 0 0 22px;
+    object-fit: contain;
+}
+
 .hero-title {
     font-family: var(--font-main);
-    font-size: clamp(5rem, 5.6vw, 4.2rem);
+    font-size: clamp(3rem, 5.6vw, 4.8rem);
     font-weight: 800;
     line-height: 1.08;
     text-transform: uppercase;
@@ -962,6 +970,10 @@
         text-align: center;
         max-width: 100%;
         transform: translateY(0);
+    }
+    .hero-logo-img {
+        margin-left: auto;
+        margin-right: auto;
     }
     .hero-title, .hero-subtitle {
         text-align: center;
